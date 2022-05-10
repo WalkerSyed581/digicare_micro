@@ -1,14 +1,20 @@
 package com.digicare.sensor_data_service.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
 import com.digicare.sensor_data_service.config.Mqtt;
-// import com.digicare.sensor_data_service.exceptions.ExceptionMessages;
+import com.digicare.sensor_data_service.models.MqttPublishModel;
+
+import com.digicare.sensor_data_service.exceptions.ExceptionMessages;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-// import com.digicare.sensor_data_service.exceptions.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttClient;
-import com.digicare.sensor_data_service.model.MqttPublishModel;
-// import com.digicare.sensor_data_service.model.MqttSubscribeModel;
+import com.digicare.sensor_data_service.models.MqttSubscribeModel;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +27,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/api/mqtt")
 public class MqttController {
+
+    @Autowired
+    Mqtt my_mqtt;
+
+    
 
     @PostMapping("publish")
     public void publishMessage(@RequestBody MqttPublishModel messagePublishModel,
@@ -81,7 +92,7 @@ public class MqttController {
     //         throws InterruptedException, org.eclipse.paho.client.mqttv3.MqttException {
     //     List<MqttSubscribeModel> messages = new ArrayList<>();
     //     CountDownLatch countDownLatch = new CountDownLatch(10);
-    //     Mqtt.getInstance().subscribeWithResponse(topic, (s, mqttMessage) -> {
+    //     my_mqtt.subscribeWithResponse(topic, (s, mqttMessage) -> {
     //         MqttSubscribeModel mqttSubscribeModel = new MqttSubscribeModel();
     //         mqttSubscribeModel.setId(mqttMessage.getId());
     //         mqttSubscribeModel.setMessage(new String(mqttMessage.getPayload()));

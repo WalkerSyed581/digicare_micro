@@ -1,4 +1,4 @@
-package com.digicare.db_service.models;
+package com.digicare.sensor_data_service.model;
 
 
 import java.util.List;

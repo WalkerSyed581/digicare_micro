@@ -1,7 +1,8 @@
 package com.digicare.db_service.models;
   
-import org.springframework.data.annotation.Id;
+import javax.persistence.Entity;
 
+import org.springframework.data.annotation.Id;
 
 public class Reading {
 

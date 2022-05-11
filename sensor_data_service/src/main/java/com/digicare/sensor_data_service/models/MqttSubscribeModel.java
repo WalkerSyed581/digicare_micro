@@ -1,4 +1,4 @@
-package com.digicare.sensor_data_service.model;
+package com.digicare.sensor_data_service.models;
 
 // import java.util.Date;
 

@@ -23,39 +23,40 @@ public class ReadingController{
 //	@Autowired
 //	private WebClient.Builder webClientBuilder;
 	
-	@Autowired
-	private RestTemplate restTemplate;
+	// @Autowired
+	// private RestTemplate restTemplate;
 	
-	@Autowired
-    Mqtt my_mqtt;
+	// @Autowired
+    // Mqtt my_mqtt;
 
-	//TODO
-	@RequestMapping("/trigger")
-	public void triggerSensor(){
-		my_mqtt.subscribe("/reading");
+	// //TODO
+	// @RequestMapping("/trigger")
+	// public void triggerSensor(){
+	// 	MqttPublishModel publishMessage;
+	// 	my_mqtt.subscribe("/reading");
 		
-	}
+	// }
 	
-	//TODO
-	@RequestMapping("/stop")
-	public void stopSensor(){
+	// //TODO
+	// @RequestMapping("/stop")
+	// public void stopSensor(){
 
-		MqttClient sub_client = my_mqtt.getSub_client();
-		try {
-			sub_client.unsubscribe("/reading");
-		} catch (MqttException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	// 	MqttClient sub_client = my_mqtt.getSub_client();
+	// 	try {
+	// 		sub_client.unsubscribe("/reading");
+	// 	} catch (MqttException e) {
+	// 		// TODO Auto-generated catch block
+	// 		e.printStackTrace();
+	// 	}
 		
-		
-	}
 
-	@RequestMapping("/{userId}")
-	public List<Reading> getReadings(){
-		UserReading readings = restTemplate.getForObject("http://sensor-data-service/readings",UserReading.class);
+	// }
+
+	// @RequestMapping("/{userId}")
+	// public List<Reading> getReadings(){
+	// 	UserReading readings = restTemplate.getForObject("http://sensor-data-service/readings",UserReading.class);
 		
-		return readings.getReadings();
+	// 	return readings.getReadings();
 		
-	}
+	// }
 }

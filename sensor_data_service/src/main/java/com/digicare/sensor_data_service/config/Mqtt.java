@@ -1,7 +1,14 @@
 package com.digicare.sensor_data_service.config;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
 import com.digicare.sensor_data_service.models.MqttPublishModel;
-import com.digicare.sensor_data_service.models.MqttSubscribeModel;
+import com.digicare.sensor_data_service.models.Reading;
+import com.digicare.sensor_data_service.repository.ReadingRepository;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -10,6 +17,7 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class Mqtt implements MqttCallback  {
 
@@ -21,6 +29,8 @@ public class Mqtt implements MqttCallback  {
 
 	public MqttClient sub_client;
 
+	@Autowired
+	ReadingRepository repository;
 
 	
 
@@ -70,11 +80,33 @@ public class Mqtt implements MqttCallback  {
 
 	}
 
+	// Default LocalDateTIme format : YYYY-MM-DDTHH:MM:SS
 	public void messageArrived(String topic, MqttMessage message) throws Exception {
+		
+		List<String> items = Arrays.asList(message.toString().split("\\s*,\\s*"));
+		if(items.size() > 1 && items.get(0) == "R"){
+			System.out.println("| Valid Message");
+			System.out.println("| Topic:" + topic);
+			SimpleDateFormat formatter=new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");  
 
-		System.out.println("| Topic:" + topic);
-		System.out.println("| Message: " +message.toString());
-		System.out.println("-------------------------------------------------");
+			Reading reading = new Reading(Double.parseDouble(items.get(1)),
+										Double.parseDouble(items.get(2)),
+										Double.parseDouble(items.get(3)),
+										formatter.parse(items.get(4)));
+			
+			
+			reading = repository.save(reading);
+
+			System.out.println("--------------------------------");
+			System.out.println(reading.toString());
+			System.out.println("");
+
+		} else {
+			System.out.println("| Invalid Message");
+			System.out.println("| Topic:" + topic);
+			System.out.println("| Message: " +message.toString());
+			System.out.println("-------------------------------------------------");
+		}
 
 	}
 

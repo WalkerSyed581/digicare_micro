@@ -1,18 +1,18 @@
 package com.digicare.sensor_data_service.models;
 
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class UserReading {
 
-    private List<Reading> readings;
+    private ArrayList<Reading> readings;
 
 
-    public List<Reading> getReadings() {
+    public ArrayList<Reading> getReadings() {
         return readings;
     }
 
-    public void setReadings(List<Reading> readings) {
+    public void setReadings(ArrayList<Reading> readings) {
         this.readings = readings;
     }
 

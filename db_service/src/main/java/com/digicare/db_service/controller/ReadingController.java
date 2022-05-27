@@ -1,8 +1,11 @@
 package com.digicare.db_service.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,9 +35,23 @@ public class ReadingController{
 
 		List<Reading> my_readings = userReadings.getReadings();
 		
-		// my_readings.forEach((reading) -> {
-		// 	repository.save(reading);
-		// });
-		System.out.print(my_readings);
+		my_readings.forEach((reading) -> {
+			reading.setSent(false);
+			repository.save(reading);
+		});
+	}
+
+	@GetMapping(value="/readings")
+	public UserReading getReadings(){
+
+		List<Reading> my_readings = repository.findBySentFalse();
+
+		my_readings.forEach((reading) -> {
+			reading.setSent(true);
+			repository.save(reading);
+		});
+		UserReading data = new UserReading();
+		data.setReadings(new ArrayList<Reading>(my_readings));
+		return data;
 	}
 }
